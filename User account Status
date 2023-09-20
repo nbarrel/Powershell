@@ -1,0 +1,55 @@
+# First, import the Active Directory module if it's not already loaded
+Import-Module ActiveDirectory
+
+# Prompt the user to enter a list of usernames separated by commas
+$usernames = Read-Host "Enter one or more usernames (comma-separated):"
+
+# Put usernames into an array
+$usernamesArray = $usernames -split ","
+
+# Iterate through the list of usernames
+foreach ($username in $usernamesArray) {
+    # Trim and clean up each username
+    $username = $username.Trim()
+
+    # Get the user object
+    $user = Get-ADUser -Identity $username -Properties "DisplayName", "msDS-UserPasswordExpiryTimeComputed", "AccountExpirationDate"
+
+    # Check if the user exists
+    if ($user -eq $null) {
+        Write-Host "User $username not found in Active Directory."
+    } else {
+        # Check if the user's password has expired
+        $passwordExpiryValue = $user."msDS-UserPasswordExpiryTimeComputed"
+        
+        if ($passwordExpiryValue -eq $null) {
+            Write-Host "Password expiration information not available for $($user.DisplayName)."
+        } elseif ($passwordExpiryValue -eq 9223372036854775807) {
+            Write-Host "Password for $($user.DisplayName) Never Expires."
+        } else {
+            $passwordExpiryDate = [datetime]::FromFileTime($passwordExpiryValue)
+            $currentDate = Get-Date
+
+            if ($currentDate -gt $passwordExpiryDate) {
+                Write-Host "Password for $($user.DisplayName) has expired."
+            } else {
+                Write-Host "Password for $($user.DisplayName) is valid until $passwordExpiryDate."
+            }
+        }
+
+        # Check if the user's account has an expiry date set
+        if ($user.AccountExpirationDate -ne $null) {
+            $accountExpiryDate = $user.AccountExpirationDate
+            $currentDate = Get-Date
+
+            if ($currentDate -gt $accountExpiryDate) {
+                Write-Host "Account for $($user.DisplayName) has expired."
+            } else {
+                Write-Host "Account for $($user.DisplayName) is valid until $accountExpiryDate."
+            }
+        } else {
+            Write-Host "Account expiration information not available for $($user.DisplayName)."
+        }
+    }
+}
+
