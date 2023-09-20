@@ -1,0 +1,138 @@
+# Task 1
+# Date
+#get-date -UFormat "%m/%d/%Y %r"
+
+#Path creation
+if(Test-Path -Path C:\info3099f)
+{
+Write-Host "C:\info3099f already exists"
+}
+else
+{
+mkdir -Path C:\info3099f
+}
+
+#(Get-Date).IsDaylightSavingTime()
+$DTG = Get-Date -UFormat "%m/%d/%Y %r" 
+#Today's Date If statment put into a variable so i can out-file
+$Task1 = if((Get-Date).IsDaylightSavingTime() )
+{  
+" $DTG is daylight savings time"
+} 
+else
+{ 
+"$DTG is not daylight savings time"
+}  
+$Task1 | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+
+
+$DTG90 = (get-date).AddDays(-90)
+## This vairable is so that I can use it anywhere 90 days before today
+
+"$DTG90 is 90 days before $DTG" | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+$90dayt1= if ($DTG90.IsDaylightSavingTime() )
+{ 
+"$DTG90 is daylight Savings time"
+}
+Else
+{ 
+"$DTG90 is not daylight Savings time"
+}
+
+$90dayt1 | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+
+Clear-Host
+
+
+
+#task-2
+#WMI Objects
+ "`n`nStep 2" | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#printer
+Get-WmiObject -Class Win32_Printer | Format-List name,printerStatus | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+$printers = (Get-Printer).count
+"there are $printers printers found" | out-file -FilePath C:\info3099f\NFB-a02.txt -Append 
+#ram
+$amountram = (Get-WmiObject Win32_PhysicalMemory -computername localhost).count
+"`n`nthere are $amountram sticks of ram found" | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#found this equation here https://emg.johnshopkins.edu/?p=747 by steve metheny 
+#from what I gather it is rounding an equation of the (total physical memory)/1GB 
+$ram = [Math]::Round((Get-WmiObject -Class win32_computersystem -ComputerName localhost).TotalPhysicalMemory/1Gb)
+"Capacity of Memory in GB: $ram" | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#operating system information
+Get-WmiObject Win32_OperatingSystem | format-list serialnumber,version | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#desktop information
+Get-Wmiobject win32_desktop | Format-List name,screensaveractive | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+
+#task 3
+"`n`nStep 3" | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#bios
+Get-WmiObject -Class Win32_BIOS | Format-Table name,version | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#battery
+Get-WmiObject win32_battery | Format-Table name,estimatedRunTime,estimatedChargeRemaining | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#Serial ports
+Get-WMIObject Win32_SerialPort | Format-Table name,providertype | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#harddrives
+get-wmiobject -class win32_logicaldisk | format-table DeviceID,size | out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+#Foreach statement got some inspiration from math problems previous
+$LVdisk = Get-WmiObject Win32_DiskDrive
+$size = foreach ($LVdisk in Get-WmiObject -Class Win32_DiskDrive)
+{
+    [Math]::Round(($LVdisk.Size / 1GB), 2)
+}
+"total capacity of all fixed drives is $(($size | Measure-Object -Sum).Sum)GB"| out-file -FilePath C:\info3099f\NFB-a02.txt -Append
+
+
+
+# Get the path to the user's Documents folder
+$documentsPath = [Environment]::GetFolderPath("MyDocuments")
+
+# Generate a timestamp for the filename
+$timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+
+# Construct the filename with the timestamp
+$filename = "ActiveHosts_$timestamp.txt"
+
+# Check if there are active hosts before saving to the file
+if ($activeHosts.Count -gt 0) {
+    # Check if the file already exists and append a number to the filename if needed
+    $counter = 1
+    while (Test-Path (Join-Path $documentsPath $filename)) {
+        $filename = "ActiveHosts_$timestamp-$counter.txt"
+        $counter++
+    }
+
+    # Save the list of active hosts to the file
+    $activeHosts | Out-File -FilePath (Join-Path $documentsPath $filename)
+
+    Write-Host "List of active hosts saved to $filename in $documentsPath."
+}
+else {
+    Write-Host "No active hosts found. File not created."
+}
+# Get the path to the user's Documents folder
+$documentsPath = [Environment]::GetFolderPath("MyDocuments")
+
+# Generate a timestamp for the filename
+$timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+
+# Construct the filename with the timestamp
+$filename = "ActiveHosts_$timestamp.txt"
+
+# Check if there are active hosts before saving to the file
+if ($activeHosts.Count -gt 0) {
+    # Check if the file already exists and append a number to the filename if needed
+    $counter = 1
+    while (Test-Path (Join-Path $documentsPath $filename)) {
+        $filename = "ActiveHosts_$timestamp-$counter.txt"
+        $counter++
+    }
+
+    # Save the list of active hosts to the file
+    $activeHosts | Out-File -FilePath (Join-Path $documentsPath $filename)
+
+    Write-Host "List of active hosts saved to $filename in $documentsPath."
+}
+else {
+    Write-Host "No active hosts found. File not created."
+}
