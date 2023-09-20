@@ -1,0 +1,42 @@
+## CENTRAL AMERICA
+$timezone = "Central America Standard Time"
+$computerName = $env:COMPUTERNAME
+
+# Check if the timezone exists
+if (Get-TimeZone -Id $timezone -ErrorAction SilentlyContinue) {
+    # Set the timezone
+    Set-TimeZone -Id $timezone
+
+    Write-Host "Time zone changed to $timezone on $computerName."
+} else {
+    Write-Host "Time zone $timezone not found on $computerName."
+}
+
+##EST
+$timezone = "Eastern Standard Time"
+$computerName = $env:COMPUTERNAME
+
+# Check if the timezone exists
+if (Get-TimeZone -Id $timezone -ErrorAction SilentlyContinue) {
+    # Set the timezone
+    Set-TimeZone -Id $timezone
+
+    Write-Host "Time zone changed to $timezone on $computerName."
+} else {
+    Write-Host "Time zone $timezone not found on $computerName."
+}
+
+###Central
+
+$timezone = "Central Standard Time"
+$computerName = $env:COMPUTERNAME
+
+# Check if the timezone exists
+if (Get-TimeZone -Id $timezone -ErrorAction SilentlyContinue) {
+    # Set the timezone
+    Set-TimeZone -Id $timezone
+
+    Write-Host "Time zone changed to $timezone on $computerName."
+} else {
+    Write-Host "Time zone $timezone not found on $computerName."
+}
