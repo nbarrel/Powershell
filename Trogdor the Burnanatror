@@ -1,0 +1,70 @@
+# Nicholas Barillas 
+# Sept 28 2019
+
+
+#This will set variables before the game starts and clear the screen
+
+
+DO 
+    {
+    $RNG = get-random -Min 1 -Max 10
+    $Guess = 1
+    $count = 0
+    $ANS = $RNG
+    }
+Until ($RNG = $ANS)
+
+Clear-host
+
+#This is the game itself 
+#Write host makes text display
+#read host asks for input
+#Do is the start of the loop
+#;break will stop the loop once the game is over
+#if will see if numbers match
+#elseif will continue the game if the gueess is not equal to the RNG
+#while keeps the loop going within the paramaters
+
+Write-host "You have been challenged by Trogdor"
+Write-host "Guess a number between 1-10"
+Write-Host "You have 3 chances to Survive Burnanation"
+# write-Host "$RNG" #for testing
+
+
+DO
+{
+  
+  If ($Guess -eq 4)
+    {
+        $count = 0
+	Write-Host "The Answer was $RNG"
+        Write-host "You have been Burnanated"
+	Write-host "GAME OVER" ;break
+                
+    }
+  Elseif ($Guess -lt 4)
+    {
+        $guessin = (read-host "Choose a number")
+
+        If ($ANS -eq $Guessin)
+            {
+            write-host "You have survived burnination"
+            write-host "you have tried $Guess times"
+            write-host "GAME OVER"
+            $count = 1
+            }
+        
+        ElseIf ($ANS -gt $geussin)
+            {
+            Write-Host "The number is higher then Your guess"
+            $Guess ++
+            }
+        
+        ElseIf ($ANS -lt $guessin)
+            {
+            Write-Host "The number is less then your guess"
+            $Guess ++
+            }
+    }
+} 
+While ($count -ne 1) ;break
