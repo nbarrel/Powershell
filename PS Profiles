@@ -1,0 +1,26 @@
+# to mak Powershell Profile  part of code from Professor Bruce
+# Set-Alias -name ldir -value Get-ChildItem
+
+# set the ISE HEader
+$host.ui.rawui.windowtitle="<<<<<< ENTER NAME HERE Powershell >>>>> "
+
+#   Get-ExecutionPolicy - unsigned then run below  automated
+Set-ExecutionPolicy -ExecutionPolicy unrestricted
+
+## set error colours
+$host.PrivateData.ErrorForegroundColor = 'white'
+$host.PrivateData.ErrorbackgroundColor = 'red'
+
+# fonts             
+$psISE.Options.FontName = 'times new  roman'             
+$psISE.Options.FontSize = 16   
+         
+# script pane             
+$psISE.Options.ScriptPaneBackgroundColor = '#FFFAEBD7' 
+
+# alias for notepad - just in case I want to use it for printing
+set-alias -name np -value C:\Program Files\Notepad++\notepad++.exe
+
+#get-content Check_Profile.ps1 | out-printer
+
+Clear-Host
