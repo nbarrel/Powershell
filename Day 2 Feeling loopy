@@ -1,0 +1,11 @@
+# 100 days by nbarrel
+#April 11 2024
+
+# Make it count to 10 "
+#$i is the variable which we shall use to count so it starts at 1
+#- le is less than or equal to, $i++ increments i by 1 for every iteration of the loop
+#Write-Output is another print function with the PS syntax
+
+for($i = 1; $i -le 10; $i++) {
+  Write-output $i
+}
