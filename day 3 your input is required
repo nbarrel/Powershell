@@ -1,0 +1,9 @@
+# 100 days by nbarrel
+#April 12 2024
+#your input is required
+# have a simple greeting with reading the persons name
+
+$name = Read-Host "Good day may you please type your name"
+Write-Host "Good day $name I hope you have a wonderful day!"
+#so you can see it before it closes
+Start-Sleep -Seconds 5
