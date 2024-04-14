@@ -1,1 +1,29 @@
+# 100 days by nbarrel
+#April 14 2024
+#Day 4
+# Files and directories
+#lets interact and create/modify simple files and directories
 
+
+$Text = echo "Have a wonderful day!" 
+$pathtofile = "c:\test\createdfile.txt"
+
+#Lets see if the file exists and if it does not exist we can create it
+#this can be done many ways; the best way IMO is a simple if statement
+
+
+
+if(Test-Path -Path $pathtofile )
+{
+Write-Host "$pathtofile exists"
+}
+else
+{
+Write-Host "$pathtofile is not present creating path"
+New-Item -Path $pathtofile -ItemType File -Force
+}
+
+#appending it will write to a new line. That is helpful when creating a loggging script
+
+
+echo $Text | Out-File -FilePath $pathtofile -Append -Force
