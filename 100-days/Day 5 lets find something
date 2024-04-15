@@ -1,0 +1,56 @@
+# 100 days by nbarrel
+#April 15 2024
+#Day 4
+# Lets find Ip adresses
+#Find ip adresses in a text file. 
+# I wanted to use a regular expression to search for an IP adress in a file
+#I got some help and more REGEX understanding from this exercise. this took me down a great learning path.
+
+#I was going to use the pattern of (\d{1,3}\.){3}\d[{1,3}  (0-999.)(0-999.)(0-999.)(0-999) number dot times 3 with number
+#As you can see that it will match any numbers which is not neccesary. 
+#I like to be exact and with the use of AI I came across this.
+
+# \b(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\b
+
+#Wow that is a lot but we can break it down 
+
+
+#Breakdown of the Regex
+
+
+#Word Boundary \b: - This asserts a boundary, ensuring that the pattern matches exactly. It will not capture instances of numbers like 1244.123.123
+# think if you are trying to find how many times the word "in" was used , without the word boundary a reg ex will match words like INcinerate, joggINg, mINimun, ect.
+
+#Non-Capturing Group (?: ... ): - The ?: starts a non-capturing group, which groups part of the regex together without holding the data. 
+#If you are looking at a bunch of log files and need to count how many files were in July of any year when creating the reg expression you do not need to hold the data to count the instances
+# In this case it will count the ip without storing the actual adresses, If we wanted we could capture the data and parse it for our own means. ie. ping each adress when found
+
+#Exact IP Octet Patterns:
+#25[0-5]: Matches numbers from 250 to 255. The first two digits are fixed as 25, and the last digit ranges from 0 to 5.
+#2[0-4][0-9]: Matches numbers from 200 to 249. The first digit is fixed as 2, the second digit can be from 0 to 4, and the third digit can be any digit (0-9).
+#1[0-9]{2}: Matches numbers from 100 to 199. The first digit is fixed as 1, followed by any two digits (using {2} to indicate exactly two occurrences of the previous range [0-9]).
+#[1-9][0-9]: Matches numbers from 10 to 99. The first digit can be from 1 to 9, and the second digit can be from 0 to 9.
+#[0-9]: Matches a single digit from 0 to 9.
+#Dot \.:
+
+
+# where are you
+$filePath = "log.txt"
+
+# Regex pattern
+$ipRegex = '\b(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\b'
+
+# Check if the file exists using not to exit the script if it does not exist
+if (-Not (Test-Path $filePath)) {
+    Write-Host "The file does not exist. Will exit in 5 seconds"
+    Start-Sleep -Seconds 5
+    exit
+}
+
+# Read file and count IP addresses
+$content = Get-Content $filePath -Raw
+#This will tell powershell that it is going to use a regular expression and it is to count the "matches" within the file
+$matches = [regex]::Matches($content, $ipRegex)
+Write-Host "There are $($matches.Count) valid IP addresses in the file $filePath."
+#make sure you can read it
+Start-Sleep -Seconds 5
