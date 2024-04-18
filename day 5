@@ -1,0 +1,13 @@
+#100 days by nbarrel
+#April 15 2024
+#Day 5
+# more regex
+#looking for emails  not a problem 
+
+$file_path = "emails.txt"
+  
+#lets recap the regex \b are our boundaries; A-Za-z0-9_%+- are all valid characters that an email can have; {2,} means that the top level domain has to be 2 characters long
+# if you change {2,} to {2,4} means anything 2-4 characters long
+  
+$pattern = '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,4}\b'
+(Get-Content $file_path) -join " " | Select-String -Pattern $pattern -AllMatches | % { $_.Matches } | % { $_.Value }
