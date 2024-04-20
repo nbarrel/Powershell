@@ -1,0 +1,28 @@
+#100 days by nbarrel
+#April 20 2024
+#Day 6
+# Dealing with CSV's 
+#This Exercise is from some work I routinely do. I was frequently handed CSV files and had to parse them to exract the info
+#A common example is when you are doing software maintaince and need to find out when the last time the software contacted the servers.
+
+$file_path = "parse.csv"
+$today = Get-Date
+$less_30_days = 0
+$more_60_days = 0
+
+Import-Csv $file_path | ForEach-Object {
+    $last_response = Get-Date $_."Last Response" -Format "yyyy-MM-dd"
+    $delta = New-TimeSpan -Start $last_response -End $today
+    if ($delta.Days -le 30) {
+        $less_30_days++
+    }
+    elseif ($delta.Days -gt 60) {
+        $more_60_days++
+    }
+}
+
+Write-Host "Hosts with last response within last 30 days: $less_30_days" 
+Write-Host "Hosts with last response more than 60 days ago: $more_60_days"
+Start-Sleep -Seconds 5
+
+#With this you can manipluate the data further and return the hostname with version numbers. 
