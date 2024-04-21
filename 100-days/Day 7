@@ -1,0 +1,27 @@
+#100 days by nbarrel
+#April 21 2024
+#Day 7
+#Let's check disk space
+#Checking disk space may be a task that is required. even though most enterprise systems have monitors this is useful
+#When you have look at systems not attched to the monitoring solution.
+#I wanted to showcase some other ways of approaching outputs. I wanted it to disply in the terminal and output to a file.
+#Tee is a great example of this and it works well for PS and BASH
+
+# Set the alert threshold to 90 %
+$threshold = 90
+$logFile = "C:\test\disk_usage.log"
+
+# Get disk usage using
+Get-WmiObject Win32_LogicalDisk | Foreach-Object {
+    $usage = ($_.FreeSpace / $_.Size) * 100
+#This is from my previous script learning PS in school
+    $percentUsed = 100 - [Math]::Round($usage, 2)
+    $output = "$($_.DeviceID) at $percentUsed% used"
+#Today I learned that tee-Object existed and it is the same as the tee command in *nix
+    $output | Tee-Object -FilePath $logFile -Append
+    
+    if ($percentUsed -gt $threshold) {
+        $alert = "Running out of space: $($_.DeviceID) at $percentUsed%"
+        $alert | Tee-Object -FilePath $logFile -Append
+    }
+}
