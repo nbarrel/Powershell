@@ -1,0 +1,12 @@
+#100 days by nbarrel
+#April 23 2024
+#Day 8
+#Simple Time and date things
+#Lets display the time every 5 secs
+#simple loops, display time, useful when doing logging such as my gardening project
+#Powershell is very simple when it comes to scripting 
+
+for ($i = 0; $i -lt 3; $i++) {
+    Get-Date -Format "yyyy-MM-dd HH:mm:ss"  
+    Start-Sleep -Seconds 5 
+}
