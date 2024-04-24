@@ -1,0 +1,9 @@
+#100 days by nbarrel
+#April 24 2024
+#Day 9
+#Lets find the amount of ram
+#a 1 liner that will display the amount of memory in the system
+
+  
+$ram = [Math]::Round((Get-WmiObject -Class win32_computersystem -ComputerName localhost).TotalPhysicalMemory/1Gb)
+"Capacity of Memory in GB: $ram" 
