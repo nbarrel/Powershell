@@ -1,0 +1,7 @@
+#100 days by nbarrel
+#April 25 2024
+#Day 10
+#Listening in
+
+
+Get-NetTCPConnection | Format-Table -Property LocalAddress, LocalPort, RemoteAddress, RemotePort, State, OwningProcess -AutoSize
