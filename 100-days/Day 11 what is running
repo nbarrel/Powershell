@@ -1,0 +1,7 @@
+#100 days by nbarrel
+#MAY 15 2024
+#Day 11
+
+
+# Get a list of active processes and display their ID, process name, and memory usage
+Get-Process | Select-Object ID, ProcessName, @{Name="MemoryUsage_MB";Expression={[math]::round($_.WS / 1MB, 2)}} | Sort-Object MemoryUsage_MB -Descending | Format-Table -AutoSize
