@@ -1,0 +1,21 @@
+#100 days by nbarrel
+#MAY 21 2024
+#Day 12
+
+#Get WMIobject vs Get-CimInstance
+
+#CIM, Common Information Model, is an open-source standard for retrieving, displaying, and managing computer, network, application, and services information
+
+#WMI, which stands for Windows Management Instrumentation, This is good for windows only :(
+
+# Get information about the operating system using Get-WmiObject
+$os = Get-WmiObject -Class Win32_OperatingSystem
+Write-Host "Operating System: $($os.Caption)"
+Write-Host "Version: $($os.Version)"
+Write-Host "Last Boot Up Time: $($os.ConvertToDateTime($os.LastBootUpTime))"
+
+# Get information about the operating system using Get-CimInstance
+$os = Get-CimInstance -ClassName CIM_OperatingSystem
+Write-Host "Operating System: $($os.Caption)"
+Write-Host "Version: $($os.Version)"
+Write-Host "Last Boot Up Time: $($os.LastBootUpTime)"
