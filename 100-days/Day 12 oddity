@@ -1,0 +1,20 @@
+# 100 days by nbarrel
+#Day 12 
+#is it even or odd like me 
+#May 31 2024
+
+
+function Test-EvenOdd {
+    param (
+        [int]$number
+    )
+    if ($number % 2 -eq 0) {
+        Write-Host "$number is even."
+    } else {
+        Write-Host "$number is odd."
+    }
+}
+
+# Test the function
+Test-EvenOdd -number 42
+Test-EvenOdd -number 33
