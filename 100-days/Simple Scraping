@@ -1,0 +1,9 @@
+# 100 days by nbarrel
+#Day 13 
+#June 6 2024
+#Scraping
+
+$url = Read-Host "Enter the URL of the website to scrape"
+$response = Invoke-WebRequest -Uri $url
+$response.Content
+
